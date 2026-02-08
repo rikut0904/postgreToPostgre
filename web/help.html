@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Help - PostgreSQL Migration Tool</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <h1>ヘルプ</h1>
+        <p>使い方と語句の説明です。</p>
+      </header>
+
+      <section class="card">
+        <h2>使い方</h2>
+        <ol>
+          <li>移行元と移行先の接続情報を入力します。</li>
+          <li>「スキーマ取得」を押して構成を読み込みます。</li>
+          <li>移行したいスキーマ・テーブルなどを選びます。</li>
+          <li>移行オプションを確認します。</li>
+          <li>「移行開始」を押します。</li>
+        </ol>
+      </section>
+
+      <section class="card">
+        <h2>用語</h2>
+        <ul>
+          <li><strong>スキーマ</strong>: テーブルなどの入れ物（名前空間）です。</li>
+          <li><strong>テーブル</strong>: 行と列のデータの集まりです。</li>
+          <li><strong>ビュー</strong>: 保存された検索結果（読み取り用の表）です。</li>
+          <li><strong>関数</strong>: DB 内で使える処理です。</li>
+          <li><strong>シーケンス</strong>: 連番を作る仕組みです。</li>
+          <li><strong>トリガー</strong>: 変更時に自動で動く処理です。</li>
+          <li><strong>外部キー（FK）</strong>: テーブル同士の関係を守る制約です。</li>
+          <li><strong>TRUNCATE</strong>: テーブルの中身を全削除します。</li>
+          <li><strong>UPSERT</strong>: 同じキーがあれば更新、なければ追加します。</li>
+          <li><strong>ドライラン</strong>: 書き込みをせずに動作だけ確認します。</li>
+          <li><strong>トランザクション</strong>: まとめて成功/失敗させる仕組みです。</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>オプションの意味</h2>
+        <ul>
+          <li><strong>既存テーブルの扱い</strong>: 既にあるテーブルを残すか、削除して作り直すかを選びます。</li>
+          <li><strong>既存データの扱い</strong>:
+            <div>全削除してから追加 = 中身を消して入れ直します。</div>
+            <div>そのまま追加 = 既存データの後ろに追加します。</div>
+            <div>同じキーは更新 = 同じ主キーの行は更新します。</div>
+          </li>
+          <li><strong>全テーブルを同時に追加</strong>: 1つのまとめた処理で進めます（失敗時は全部戻します）。</li>
+          <li><strong>移行中だけ外部キーを無効にする</strong>: 途中で止まらないように、移行中だけ関係チェックを外します。</li>
+          <li><strong>書き込みなしで試す</strong>: 実際の保存は行いません。</li>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PostgreSQL → PostgreSQL Migration Tool</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
+  <div class="page">
+    <header class="header">
+      <h1>PostgreSQL → PostgreSQL Migration Tool</h1>
+      <div class="actions">
+        <a class="link-button" href="/help">ヘルプ</a>
+      </div>
+    </header>
+
+    <section class="card">
+      <h2>Step 1: 接続設定</h2>
+      <div class="grid-2">
+        <div>
+          <h3>移行元 (Source)</h3>
+          <div class="form">
+            <label>DATABASE_URL <input id="src-url" placeholder="postgresql://..." /></label>
+            <div class="or">OR</div>
+            <label>Host <input id="src-host" /></label>
+            <label>Port <input id="src-port" type="number" value="5432" /></label>
+            <label>DB <input id="src-db" /></label>
+            <label>User <input id="src-user" /></label>
+            <label>Password <input id="src-pass" type="password" /></label>
+            <label>SSL Mode <input id="src-ssl" placeholder="disable" /></label>
+          </div>
+          <div class="actions">
+            <button id="src-test">テスト接続</button>
+          </div>
+        </div>
+        <div>
+          <h3>移行先 (Destination)</h3>
+          <div class="form">
+            <label>DATABASE_URL <input id="dst-url" placeholder="postgresql://..." /></label>
+            <div class="or">OR</div>
+            <label>Host <input id="dst-host" /></label>
+            <label>Port <input id="dst-port" type="number" value="5432" /></label>
+            <label>DB <input id="dst-db" /></label>
+            <label>User <input id="dst-user" /></label>
+            <label>Password <input id="dst-pass" type="password" /></label>
+            <label>SSL Mode <input id="dst-ssl" placeholder="disable" /></label>
+          </div>
+          <div class="actions">
+            <button id="dst-test">テスト接続</button>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="browse">スキーマ取得</button>
+      </div>
+      <div id="conn-message" class="message"></div>
+    </section>
+
+    <section class="card">
+      <h2>Step 2: 移行対象選択</h2>
+      <div id="schema-tree" class="schema-tree"></div>
+    </section>
+
+    <section class="card">
+      <h2>Step 3: 移行オプション</h2>
+      <div class="grid-2">
+        <label>既存テーブルの扱い
+          <select id="opt-table">
+            <option value="drop">削除して作り直す</option>
+          </select>
+        </label>
+        <label>既存データの扱い
+          <select id="opt-data">
+            <option value="truncate">全削除してから追加</option>
+            <option value="append">そのまま追加</option>
+            <option value="upsert">同じキーは更新</option>
+          </select>
+        </label>
+        <label>バッチサイズ
+          <input id="opt-batch" type="number" value="1000" />
+        </label>
+        <label>並行ワーカー数
+          <input id="opt-workers" type="number" value="0" min="0" max="16" title="0 = 自動（最大8）" />
+        </label>
+        <label class="checkbox">
+          <input id="opt-fk" type="checkbox" checked />
+          移行中だけ外部キーを無効にする
+        </label>
+        <label class="checkbox">
+          <input id="opt-dry" type="checkbox" />
+          書き込みなしで試す（DBは変更しない）
+        </label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Step 4: 実行・進捗</h2>
+      <div class="actions">
+        <button id="start">移行開始</button>
+        <button id="cancel">中断</button>
+      </div>
+      <div class="progress">
+        <div>全体進捗: <span id="overall">0%</span></div>
+        <div>経過時間: <span id="elapsed">0s</span></div>
+        <div>フェーズ: <span id="phase">-</span></div>
+      </div>
+      <div id="table-progress" class="table-progress"></div>
+      <div id="failed-tables" class="failed-tables" style="display:none"></div>
+      <div class="log">
+        <div>ログ</div>
+        <pre id="log"></pre>
+      </div>
+    </section>
+  </div>
+  <script src="/js/app.js"></script>
+</body>
+
+</html>
